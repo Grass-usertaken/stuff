@@ -1,0 +1,287 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background: #fafafa;
+  color: #1a1a1a;
+}
+
+.view {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Setup View */
+#setup-view {
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+}
+
+.setup-card {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  padding: 48px 40px;
+  width: 520px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.logo-area {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.logo-icon {
+  font-size: 48px;
+  color: #e57035;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.logo-area h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111111;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #888888;
+  margin-top: 4px;
+}
+
+.deps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 8px 0;
+}
+
+.dep-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f8f8f8;
+  border-radius: 10px;
+  border: 1px solid #eeeeee;
+  transition: all 0.2s ease;
+}
+
+.dep-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333333;
+}
+
+.dep-status {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.dep-status.ok {
+  color: #2a9d3f;
+  background: #e8f5e9;
+}
+
+.dep-status.missing {
+  color: #c0392b;
+  background: #ffebee;
+}
+
+.dep-status.pending {
+  color: #888888;
+  background: #f0f0f0;
+}
+
+.dep-status.installing {
+  color: #e57035;
+  background: #fff3e0;
+}
+
+.progress-area {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 8px;
+  background: #eeeeee;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #e57035, #f39c63);
+  border-radius: 4px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-text {
+  font-size: 13px;
+  color: #666666;
+  text-align: center;
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #e57035, #d35400);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(229, 112, 53, 0.25);
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(229, 112, 53, 0.35);
+}
+
+.primary-btn:active {
+  transform: translateY(0);
+}
+
+.primary-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.error-text {
+  color: #c0392b;
+  font-size: 13px;
+  text-align: center;
+  min-height: 18px;
+}
+
+/* Main View */
+#main-view {
+  background: #fafafa;
+}
+
+.titlebar {
+  height: 52px;
+  background: #ffffff;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  flex-shrink: 0;
+  -webkit-app-region: drag;
+}
+
+.titlebar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  -webkit-app-region: no-drag;
+}
+
+.titlebar-icon {
+  font-size: 20px;
+  color: #e57035;
+}
+
+.titlebar-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111111;
+}
+
+.titlebar-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: #e57035;
+  background: #fff3e0;
+  padding: 3px 8px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.titlebar-right {
+  -webkit-app-region: no-drag;
+}
+
+.server-status {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.server-status.online {
+  color: #2a9d3f;
+}
+
+.server-status.offline {
+  color: #c0392b;
+}
+
+.terminal-container {
+  flex: 1;
+  padding: 16px;
+  overflow: hidden;
+  background: #fafafa;
+}
+
+#terminal {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.xterm {
+  padding: 12px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #aaaaaa;
+}

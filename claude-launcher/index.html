@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Launcher</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="node_modules/xterm/css/xterm.css" />
+
+</head>
+<body>
+  <div id="app">
+    <!-- Setup View -->
+    <div id="setup-view" class="view hidden">
+      <div class="setup-card">
+        <div class="logo-area">
+          <div class="logo-icon">◈</div>
+          <h1>Claude Launcher</h1>
+          <p class="subtitle">Setup & Dependency Installer</p>
+        </div>
+        
+        <div id="deps-list" class="deps-list">
+          <div class="dep-item" id="dep-git"><span class="dep-name">Git</span><span class="dep-status pending">Checking...</span></div>
+          <div class="dep-item" id="dep-npm"><span class="dep-name">Node.js / npm</span><span class="dep-status pending">Checking...</span></div>
+          <div class="dep-item" id="dep-claude"><span class="dep-name">Claude Code CLI</span><span class="dep-status pending">Checking...</span></div>
+          <div class="dep-item" id="dep-uv"><span class="dep-name">uv</span><span class="dep-status pending">Checking...</span></div>
+          <div class="dep-item" id="dep-fcc"><span class="dep-name">Free Claude Code</span><span class="dep-status pending">Checking...</span></div>
+        </div>
+        
+        <div id="progress-area" class="progress-area hidden">
+          <div class="progress-bar-bg"><div id="progress-fill" class="progress-bar-fill"></div></div>
+          <p id="progress-text" class="progress-text"></p>
+        </div>
+        
+        <button id="install-btn" class="primary-btn hidden">Install Missing Dependencies</button>
+        <button id="launch-btn" class="primary-btn hidden">Launch Claude</button>
+        <p id="setup-error" class="error-text"></p>
+      </div>
+    </div>
+    
+    <!-- Main View -->
+    <div id="main-view" class="view hidden">
+      <div class="titlebar">
+        <div class="titlebar-left">
+          <span class="titlebar-icon">◈</span>
+          <span class="titlebar-title">Claude</span>
+          <span class="titlebar-badge">Free</span>
+        </div>
+        <div class="titlebar-right">
+          <span id="server-status" class="server-status online">● Proxy Online</span>
+        </div>
+      </div>
+      <div class="terminal-container">
+        <div id="terminal"></div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="renderer.js"></script>
+</body>
+</html>
